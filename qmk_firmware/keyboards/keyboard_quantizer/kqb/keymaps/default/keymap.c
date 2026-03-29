@@ -15,9 +15,7 @@
  */
 #include QMK_KEYBOARD_H
 
-#ifdef POINTING_DEVICE_ENABLE
 #include "pointing_device.h"
-#endif
 #include "report_parser.h"
 
 #include "quantizer_mouse.h"
