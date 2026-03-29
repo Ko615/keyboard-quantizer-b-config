@@ -55,11 +55,6 @@ bool bmp_config_overwrite(bmp_api_config_t const *const config_on_storage,
     keyboard_config->mode = SINGLE;
     memcpy(&keyboard_config->device_info, &default_config.device_info,
            sizeof(keyboard_config->device_info));
-    // Change identity to clear macOS cache
-    strncpy(keyboard_config->device_info.name, "KQB-KBD", 31);
-    keyboard_config->device_info.vid = 0xFEED;
-    keyboard_config->device_info.pid = 0x999D;
-    keyboard_config->version = 0x0002;
 
     keyboard_config->param_peripheral.max_interval  = 8;
     keyboard_config->param_peripheral.min_interval  = 8;
