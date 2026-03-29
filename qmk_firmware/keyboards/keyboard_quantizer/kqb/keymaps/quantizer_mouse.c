@@ -3,6 +3,8 @@
 
 #include QMK_KEYBOARD_H
 
+#ifdef POINTING_DEVICE_ENABLE
+
 #include "dynamic_keymap.h"
 #include "vial.h"
 
@@ -366,3 +368,16 @@ bool pre_process_record_mouse(uint16_t keycode, keyrecord_t *record) {
 
     return true;
 }
+
+#else
+
+uint8_t  encoder_modifier            = 0;
+uint16_t encoder_modifier_pressed_ms = 0;
+bool     is_encoder_action           = false;
+
+void post_process_record_mouse(uint16_t keycode, keyrecord_t* record) {}
+bool process_record_mouse(uint16_t keycode, keyrecord_t* record) { return true; }
+void set_mouse_gesture_threshold(uint16_t val) {}
+bool pre_process_record_mouse(uint16_t keycode, keyrecord_t *record) { return true; }
+
+#endif

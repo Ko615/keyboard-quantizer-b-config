@@ -192,7 +192,9 @@ uint8_t matrix_scan_impl(matrix_row_t *_matrix) {
     return qt_matrix_scan(_matrix);
 }
 
+#ifdef POINTING_DEVICE_ENABLE
 bool mouse_send_flag = false;
+#endif
 
 __attribute__((weak)) void keyboard_report_hook(keyboard_parse_result_t const* report) {
     if (debug_enable) {
@@ -212,6 +214,7 @@ __attribute__((weak)) void keyboard_report_hook(keyboard_parse_result_t const* r
     matrix_dest[29] = 0;
 }
 
+#ifdef POINTING_DEVICE_ENABLE
 __attribute__((weak)) void mouse_report_hook(mouse_parse_result_t const* report) {
     if (debug_enable) {
         uprintf("Mouse report\n");
@@ -236,7 +239,9 @@ __attribute__((weak)) void mouse_report_hook(mouse_parse_result_t const* report)
 
     pointing_device_set_report(mouse);
 }
+#endif
 
+#ifdef POINTING_DEVICE_ENABLE
 bool pointing_device_task(void) {
     if (mouse_send_flag) {
         bool send_report = pointing_device_send();
@@ -246,14 +251,17 @@ bool pointing_device_task(void) {
 
     return false;
 }
+#endif
 
 void vendor_report_parser(uint16_t usage_id, hid_report_member_t const* member, uint8_t const* data, uint8_t len) {
     // For Lenovo thinkpad keyboard(17ef:6047)
     // TODO: restriction by VID:PID
     if (usage_id == 0xFFA1) {
+#ifdef POINTING_DEVICE_ENABLE
         mouse_parse_result_t mouse = {0};
         mouse.h                    = (data[0] & 0x80 ? 0xFF00 : 0) | data[0];
         mouse_report_hook(&mouse);
+#endif
     }
 }
 

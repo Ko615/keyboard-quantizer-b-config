@@ -3,7 +3,7 @@
     "keyboard_name": "Keyboard Quantizer",
     "maintainer": "sekigon-gonnoc",
     "features": {
-        "pointing_device": true,
+        "pointing_device": false,
         "rgblight": true
     },
     "qmk": {

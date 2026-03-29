@@ -18,7 +18,9 @@
 #include "report_descriptor_parser.h"
 #include "report_parser.h"
 #include "process_packet.h"
+#ifdef POINTING_DEVICE_ENABLE
 #include "quantizer_mouse.h"
+#endif
 
 #include <string.h>
 
@@ -55,11 +57,13 @@ bool bmp_config_overwrite(bmp_api_config_t const *const config_on_storage,
     keyboard_config->mode = SINGLE;
     memcpy(&keyboard_config->device_info, &default_config.device_info,
            sizeof(keyboard_config->device_info));
-    // Force keyboard appearance (0x03C1) so macOS treats this as a keyboard
-    // over BLE even when pointing_device is enabled.
-    // Without this, the BMP default_config may advertise as mouse (0x03C2),
-    // causing macOS to ignore keyboard HID reports entirely.
+    // Force keyboard appearance (0x03C1) and change identity to clear macOS cache
     keyboard_config->device_info.appearance = 961;
+    strncpy(keyboard_config->device_info.name, "KQB-KBD", 31);
+    keyboard_config->device_info.vid = 0xFEED;
+    keyboard_config->device_info.pid = 0x999D;
+    keyboard_config->version = 0x0002;
+
     keyboard_config->param_peripheral.max_interval  = 8;
     keyboard_config->param_peripheral.min_interval  = 8;
     keyboard_config->param_peripheral.slave_latency = 7;
@@ -157,7 +161,9 @@ void keyboard_post_init_kb(void) {
     }
 
     keyboard_config.gesture_threshold = keyboard_config.gesture_threshold == 0 ? 50 : keyboard_config.gesture_threshold;
+#ifdef POINTING_DEVICE_ENABLE
     set_mouse_gesture_threshold(keyboard_config.gesture_threshold);
+#endif
     set_auto_sleep_timeout(keyboard_config.sleep * 10 * 60 * 1000);
 }
 
@@ -418,7 +424,9 @@ MSCMD_USER_RESULT usrcmd_kqb_settings(MSOPT *msopt, MSCMD_USER_OBJECT usrobj) {
             keyboard_config.gesture_threshold = value;
         }
         eeconfig_update_kb(keyboard_config.raw);
+#ifdef POINTING_DEVICE_ENABLE
         set_mouse_gesture_threshold(keyboard_config.gesture_threshold == 0 ? 50 : keyboard_config.gesture_threshold);
+#endif
         set_auto_sleep_timeout(keyboard_config.sleep * 10 * 60 * 1000);
     } else {
         printf("{\"startup\":%d, \"parser\":%d, \"sleep\":%d, \"interval\": %d, \"duty\": %d, \"gesture\": %d}\n", //

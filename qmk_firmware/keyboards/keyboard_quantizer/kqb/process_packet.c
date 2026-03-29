@@ -25,7 +25,9 @@
 #include "string.h"
 #include "uart.h"
 #include "quantum.h"
+#ifdef POINTING_DEVICE_ENABLE
 #include "pointing_device.h"
+#endif
 
 #ifndef QUANTIZER_REPORT_PARSER
 #    define QUANTIZER_REPORT_PARSER REPORT_PARSER_DEFAULT
