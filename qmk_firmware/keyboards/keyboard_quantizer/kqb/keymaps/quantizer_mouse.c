@@ -379,5 +379,6 @@ void post_process_record_mouse(uint16_t keycode, keyrecord_t* record) {}
 bool process_record_mouse(uint16_t keycode, keyrecord_t* record) { return true; }
 void set_mouse_gesture_threshold(uint16_t val) {}
 bool pre_process_record_mouse(uint16_t keycode, keyrecord_t *record) { return true; }
+void mouse_report_hook(const void* report) {}
 
 #endif
