@@ -18,9 +18,7 @@
 #include "report_descriptor_parser.h"
 #include "report_parser.h"
 #include "process_packet.h"
-#ifdef POINTING_DEVICE_ENABLE
 #include "quantizer_mouse.h"
-#endif
 
 #include <string.h>
 
