@@ -55,6 +55,11 @@ bool bmp_config_overwrite(bmp_api_config_t const *const config_on_storage,
     keyboard_config->mode = SINGLE;
     memcpy(&keyboard_config->device_info, &default_config.device_info,
            sizeof(keyboard_config->device_info));
+    // Force keyboard appearance (0x03C1) so macOS treats this as a keyboard
+    // over BLE even when pointing_device is enabled.
+    // Without this, the BMP default_config may advertise as mouse (0x03C2),
+    // causing macOS to ignore keyboard HID reports entirely.
+    keyboard_config->device_info.appearance = 961;
     keyboard_config->param_peripheral.max_interval  = 8;
     keyboard_config->param_peripheral.min_interval  = 8;
     keyboard_config->param_peripheral.slave_latency = 7;
