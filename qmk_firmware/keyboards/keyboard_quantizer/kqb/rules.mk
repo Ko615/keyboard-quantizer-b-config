@@ -8,7 +8,7 @@ EEPROM_DRIVER  = custom
 POINTING_DEVICE_DRIVER = custom
 
 CUSTOM_MATRIX = yes
-MOUSE_SHARED_EP = yes
+MOUSE_SHARED_EP = no
 MOUSEKEY_ENABLE = no       # Mouse keys
 EXTRAKEY_ENABLE = no       # Audio control and System control
 CONSOLE_ENABLE = yes        # Console for debug
